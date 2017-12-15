@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $KIOSK = "yes" ]; then
-   python /opt/maraschino/Maraschino.py --kisok --datadir /config
+   $KIOSKARG="--kiosk "
 fi
 
-python /opt/maraschino/Maraschino.py --datadir /config
+python /opt/maraschino/Maraschino.py $KIOSKARG --datadir /config
