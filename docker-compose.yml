@@ -1,0 +1,17 @@
+version: '2'
+services:
+  nagios:
+    restart: unless-stopped
+    image: ceyounger/maraschino-plex
+    container_name: maraschino-plex
+    ports:
+      - "7000:7000"
+    volumes:
+      - "<CONFIG VOLUME>:/config"
+    environment:
+      #- KIOSK=yes
+
+networks:
+  default:
+    external:
+      name: <bridge if default>
