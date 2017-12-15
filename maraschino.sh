@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $KIOSK = "yes" ]; then
+if [[ $KIOSK = "yes" ]]; then
    $KIOSKARG="--kiosk "
 fi
 
