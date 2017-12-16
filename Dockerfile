@@ -10,23 +10,24 @@ ENV LANGUAGE en_US.UTF-8
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
-
-# Configure user nobody to match Synology DiskStation's settings
-# RUN \
-# usermod -u 99 nobody && \
-# usermod -g 99 nobody && \
-# usermod -d /home nobody && \
-# chown -R nobody:users /home
+RUN mkdir -p /etc/my_init.d
 
 # Disable SSH
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 
-# Install Maraschino for Plex
+# Update and Install Packages
 RUN \
   add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu/ trusty universe multiverse" && \
   add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates universe multiverse" && \
-  apt-get update -q && \
-  apt-get install -qy python unrar unzip wget && \
+  apt-get update -q && apt-get install -qy \ 
+    python \
+    unrar \
+    unzip \
+    wget \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Maraschino for Plex and clean up
+RUN \
   mkdir /opt/maraschino && \
   wget -P /tmp/ https://github.com/gugahoi/maraschino/archive/master.zip && \
   unzip /tmp/master.zip -d /opt/maraschino && \
@@ -41,16 +42,14 @@ VOLUME /config
 EXPOSE 7000
 
 # Add plex.sh to execute during container startup
-RUN mkdir -p /etc/my_init.d
-ADD plex.sh /etc/my_init.d/plex.sh
+COPY plex.sh /etc/my_init.d/plex.sh
 RUN chmod +x /etc/my_init.d/plex.sh
 
 # Add nzbdrone.sh to execute during container startup
-RUN mkdir -p /etc/my_init.d
-ADD nzbdrone.sh /etc/my_init.d/nzbdrone.sh
+COPY nzbdrone.sh /etc/my_init.d/nzbdrone.sh
 RUN chmod +x /etc/my_init.d/nzbdrone.sh
 
 # Add maraschino to runit
 RUN mkdir /etc/service/maraschino
-ADD maraschino.sh /etc/service/maraschino/run
+COPY maraschino.sh /etc/service/maraschino/run
 RUN chmod +x /etc/service/maraschino/run
