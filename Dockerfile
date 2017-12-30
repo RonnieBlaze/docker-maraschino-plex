@@ -4,6 +4,9 @@ MAINTAINER ceyounger <ceyounger@yahoo.com>
 # Set correct environment variables
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
+
+# Set the locale, to support files that have non-ASCII characters
+RUN locale-gen en_US.UTF-8
 ENV LC_ALL C.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
@@ -15,11 +18,16 @@ RUN mkdir -p /etc/my_init.d
 # Disable SSH
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 
+# Speed up APT
+RUN \
+echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup && \
+echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache
+
 # Update and Install Packages
 RUN \
   add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu/ trusty universe multiverse" && \
   add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates universe multiverse" && \
-  apt-get update -q && apt-get install -qy \ 
+  apt-get update -q && apt-get install -qy \
     python \
     unrar \
     unzip \
