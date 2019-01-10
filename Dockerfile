@@ -1,5 +1,10 @@
 FROM phusion/baseimage:0.9.16
-MAINTAINER ceyounger <ceyounger@yahoo.com>
+
+# set version label
+ARG BUILD_DATE
+ARG VERSION
+LABEL build_version="taius.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="ceyounger"
 
 # Set correct environment variables
 ENV HOME /root
@@ -44,7 +49,7 @@ RUN \
   rm /tmp/master.zip
 
 #set config directory
-VOLUME /config
+VOLUME /config /data
 
 #expose ports
 EXPOSE 7000
@@ -56,6 +61,9 @@ RUN chmod +x /etc/my_init.d/plex.sh
 # Add nzbdrone.sh to execute during container startup
 COPY nzbdrone.sh /etc/my_init.d/nzbdrone.sh
 RUN chmod +x /etc/my_init.d/nzbdrone.sh
+
+# Add favicon
+COPY ceyounger-maraschino-plex-latest-icon.png /config/plugins/dockerMan/ceyounger-maraschino-plex-latest-icon.png 
 
 # Add maraschino to runit
 RUN mkdir /etc/service/maraschino
