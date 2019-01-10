@@ -1,3 +1,8 @@
 .git/*
 docker-compose.yml
+.git
+.gitignore
+.github
+.gitattributes
+READMETEMPLATE.md
 README.md
