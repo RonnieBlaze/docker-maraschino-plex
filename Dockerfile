@@ -42,7 +42,7 @@ RUN \
 # Install Maraschino for Plex and clean up
 RUN \
   mkdir /opt/maraschino && \
-  wget -P /tmp/ https://github.com/gugahoi/maraschino/archive/master.zip && \
+  wget -P /tmp/ https://github.com/ebright/maraschino/archive/master.zip && \
   unzip /tmp/master.zip -d /opt/maraschino && \
   mv /opt/maraschino/maraschino-master/* /opt/maraschino && \
   rm -rf /opt/maraschino/maraschino-master && \
