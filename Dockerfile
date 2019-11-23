@@ -4,7 +4,7 @@ FROM phusion/baseimage:0.9.16
 ARG BUILD_DATE
 ARG VERSION
 LABEL build_version="taius.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="ceyounger"
+LABEL maintainer="ronnieblaze"
 
 # Set correct environment variables
 ENV HOME /root
