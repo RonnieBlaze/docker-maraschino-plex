@@ -54,17 +54,6 @@ VOLUME /config /data
 #expose ports
 EXPOSE 7000
 
-# Add plex.sh to execute during container startup
-COPY plex.sh /etc/my_init.d/plex.sh
-RUN chmod +x /etc/my_init.d/plex.sh
-
-# Add nzbdrone.sh to execute during container startup
-COPY nzbdrone.sh /etc/my_init.d/nzbdrone.sh
-RUN chmod +x /etc/my_init.d/nzbdrone.sh
-
-# Add favicon
-COPY ceyounger-maraschino-plex-latest-icon.png /config/plugins/dockerMan/ceyounger-maraschino-plex-latest-icon.png 
-
 # Add maraschino to runit
 RUN mkdir /etc/service/maraschino
 COPY maraschino.sh /etc/service/maraschino/run
